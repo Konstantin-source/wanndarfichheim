@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wann darf ich heim? 🏠</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #a78bfa;
+            --primary-dark: #8b5cf6;
+            --primary-light: #c4b5fd;
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --card-border: rgba(255, 255, 255, 0.25);
+            --text-primary: #1e1b4b;
+            --text-secondary: #4c1d95;
+            --text-muted: #6b7280;
+            --success: #34d399;
+            --warning: #fbbf24;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb, #d4fc79, #96e6a1, #fbc2eb, #a6c1ee);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated background with floating shapes */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            mix-blend-mode: multiply;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            top: -100px;
+            left: -100px;
+            animation: blob1 25s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            width: 450px;
+            height: 450px;
+            background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+            top: 50%;
+            right: -150px;
+            animation: blob2 20s ease-in-out infinite;
+        }
+
+        .blob-3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #d9f99d, #bef264);
+            bottom: -100px;
+            left: 30%;
+            animation: blob3 22s ease-in-out infinite;
+        }
+
+        .blob-4 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+            top: 20%;
+            left: 50%;
+            animation: blob4 18s ease-in-out infinite;
+        }
+
+        .blob-5 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #fde68a, #fcd34d);
+            bottom: 20%;
+            right: 20%;
+            animation: blob5 23s ease-in-out infinite;
+        }
+
+        .blob-6 {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+            top: 60%;
+            left: 10%;
+            animation: blob6 19s ease-in-out infinite;
+        }
+
+        @keyframes blob1 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(100px, 50px) scale(1.1) rotate(90deg); }
+            50% { transform: translate(50px, 100px) scale(0.9) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) scale(1.05) rotate(270deg); }
+        }
+
+        @keyframes blob2 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(-80px, 80px) scale(1.15) rotate(-90deg); }
+            50% { transform: translate(-120px, 20px) scale(0.85) rotate(-180deg); }
+            75% { transform: translate(-40px, -60px) scale(1.1) rotate(-270deg); }
+        }
+
+        @keyframes blob3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(60px, -80px) scale(1.2); }
+            66% { transform: translate(-40px, -40px) scale(0.9); }
+        }
+
+        @keyframes blob4 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(-100px, 80px) scale(1.1) rotate(180deg); }
+        }
+
+        @keyframes blob5 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-60px, -40px) scale(1.15); }
+            50% { transform: translate(-30px, 60px) scale(0.9); }
+            75% { transform: translate(40px, 20px) scale(1.05); }
+        }
+
+        @keyframes blob6 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(80px, -60px) scale(1.1) rotate(120deg); }
+            66% { transform: translate(40px, 40px) scale(0.95) rotate(240deg); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; width: 8px; height: 8px; }
+        .particle:nth-child(2) { left: 20%; animation-duration: 15s; animation-delay: -2s; width: 12px; height: 12px; }
+        .particle:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: -4s; width: 6px; height: 6px; }
+        .particle:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: -1s; width: 10px; height: 10px; }
+        .particle:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: -3s; width: 14px; height: 14px; }
+        .particle:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: -5s; width: 8px; height: 8px; }
+        .particle:nth-child(7) { left: 70%; animation-duration: 17s; animation-delay: -2s; width: 11px; height: 11px; }
+        .particle:nth-child(8) { left: 80%; animation-duration: 11s; animation-delay: -4s; width: 7px; height: 7px; }
+        .particle:nth-child(9) { left: 90%; animation-duration: 19s; animation-delay: -1s; width: 9px; height: 9px; }
+        .particle:nth-child(10) { left: 15%; animation-duration: 14s; animation-delay: -3s; width: 13px; height: 13px; }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 32px;
+            padding: 48px 40px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+                0 -20px 40px -20px rgba(255, 255, 255, 0.3) inset;
+            animation: cardFloat 6s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 
+                0 35px 60px -15px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+                0 -20px 40px -20px rgba(255, 255, 255, 0.4) inset;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .emoji-icon {
+            font-size: 72px;
+            margin-bottom: 16px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite, wiggle 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGradient 5s ease infinite;
+        }
+
+        @keyframes titleGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .input-group {
+            margin-bottom: 32px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .time-input-wrapper {
+            position: relative;
+        }
+
+        input[type="time"] {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 28px;
+            font-weight: 700;
+            font-family: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            border: 3px solid transparent;
+            border-radius: 20px;
+            color: var(--text-primary);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.1),
+                0 0 0 0 rgba(167, 139, 250, 0);
+        }
+
+        input[type="time"]:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,1), rgba(255,255,255,0.9));
+            transform: scale(1.02);
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.15),
+                0 0 0 0 rgba(167, 139, 250, 0);
+        }
+
+        input[type="time"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 8px 30px rgba(0,0,0,0.15),
+                0 0 0 6px rgba(167, 139, 250, 0.3);
+            transform: scale(1.02);
+        }
+
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s;
+            filter: none;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        input[type="time"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+            background: rgba(167, 139, 250, 0.2);
+        }
+
+        .result-section {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-section.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: resultGradient 4s ease infinite;
+            border-radius: 24px;
+            padding: 36px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 40px rgba(102, 126, 234, 0.4),
+                0 0 60px rgba(240, 147, 251, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(102, 126, 234, 0.5),
+                0 0 80px rgba(240, 147, 251, 0.3);
+        }
+
+        @keyframes resultGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .result-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .result-time {
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -3px;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .info-item {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .info-item .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .info-item.pause .value {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .info-item.arbeitszeit .value {
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer .highlight {
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        /* Countdown animation */
+        .countdown-active .result-time {
+            animation: pulse 1s ease-in-out infinite, glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3); }
+            50% { text-shadow: 0 4px 40px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.3); }
+        }
+
+        /* Responsive */
+        @media (max-width: 520px) {
+            .card {
+                padding: 32px 24px;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .result-time {
+                font-size: 48px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emoji-icon {
+                font-size: 56px;
+            }
+        }
+
+        /* Current time display */
+        .current-time {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 16px;
+            padding: 14px 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: fadeInDown 0.6s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .current-time span {
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: 6px;
+            font-size: 16px;
+        }
+
+        /* Time remaining badge */
+        .time-remaining {
+            margin-top: 16px;
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-remaining.done {
+            color: #bbf7d0;
+            font-weight: 700;
+            font-size: 18px;
+            animation: celebrate 0.5s ease;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .time-remaining.soon {
+            color: #fef08a;
+            font-weight: 600;
+            animation: urgentPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .footer .highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+        <div class="blob blob-6"></div>
+    </div>
+
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="current-time">
+        Jetzt:<span id="currentTime">--:--</span>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <span class="emoji-icon">🏠</span>
+                <h1>Wann darf ich heim?</h1>
+                <p class="subtitle">Gib deine Ankunftszeit ein</p>
+            </div>
+
+            <div class="input-group">
+                <label for="arrivalTime">⏰ Ankunftszeit</label>
+                <div class="time-input-wrapper">
+                    <input type="time" id="arrivalTime" value="08:00">
+                </div>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <div class="result-card" id="resultCard">
+                    <div class="result-label">Du darfst gehen um</div>
+                    <div class="result-time" id="leaveTime">--:--</div>
+                    <div class="time-remaining" id="timeRemaining"></div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item arbeitszeit">
+                        <div class="label">Arbeitszeit</div>
+                        <div class="value" id="workTime">--:--</div>
+                    </div>
+                    <div class="info-item pause">
+                        <div class="label">Pause</div>
+                        <div class="value" id="pauseTime">-- min</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>
+                    Standardarbeitszeit: <span class="highlight">7:36</span><br>
+                    Pause nach Arbeitszeit gestaffelt
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const STANDARD_WORK_HOURS = 7;
+        const STANDARD_WORK_MINUTES = 36;
+        const TOTAL_WORK_MINUTES = STANDARD_WORK_HOURS * 60 + STANDARD_WORK_MINUTES; // 456 minutes
+
+        // Get pause duration based on work hours (German insurance standard)
+        function getPauseDuration(workMinutes) {
+            if (workMinutes <= 360) { // up to 6 hours
+                return 0;
+            } else if (workMinutes <= 540) { // 6-9 hours
+                return 30;
+            } else { // over 9 hours
+                return 45;
+            }
+        }
+
+        // Format time as HH:MM
+        function formatTime(hours, minutes) {
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+
+        // Parse time string to minutes since midnight
+        function parseTimeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        // Calculate leave time
+        function calculateLeaveTime(arrivalTime) {
+            const arrivalMinutes = parseTimeToMinutes(arrivalTime);
+            
+            // Standard pause for 7:36 work time is 30 minutes (between 6-9 hours)
+            const pauseMinutes = getPauseDuration(TOTAL_WORK_MINUTES);
+            
+            // Total time at work = work time + pause
+            const totalMinutesAtWork = TOTAL_WORK_MINUTES + pauseMinutes;
+            
+            // Leave time
+            let leaveMinutes = arrivalMinutes + totalMinutesAtWork;
+            
+            // Handle overflow past midnight
+            if (leaveMinutes >= 1440) {
+                leaveMinutes -= 1440;
+            }
+            
+            const leaveHours = Math.floor(leaveMinutes / 60);
+            const leaveMins = leaveMinutes % 60;
+            
+            return {
+                leaveTime: formatTime(leaveHours, leaveMins),
+                leaveMinutes: leaveMinutes,
+                workTime: formatTime(STANDARD_WORK_HOURS, STANDARD_WORK_MINUTES),
+                pauseMinutes: pauseMinutes
+            };
+        }
+
+        // Update current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = formatTime(now.getHours(), now.getMinutes());
+        }
+
+        // Calculate and display time remaining
+        function updateTimeRemaining(leaveMinutes) {
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            
+            let remainingMinutes = leaveMinutes - currentMinutes;
+            
+            // Handle case where leave time is past midnight
+            if (remainingMinutes < -720) {
+                remainingMinutes += 1440;
+            }
+            
+            const timeRemainingEl = document.getElementById('timeRemaining');
+            const resultCard = document.getElementById('resultCard');
+            
+            if (remainingMinutes <= 0) {
+                timeRemainingEl.textContent = '🎉 Du darfst gehen!';
+                timeRemainingEl.className = 'time-remaining done';
+                resultCard.classList.remove('countdown-active');
+            } else if (remainingMinutes <= 30) {
+                const hours = Math.floor(remainingMinutes / 60);
+                const mins = remainingMinutes % 60;
+                timeRemainingEl.textContent = hours > 0 
+                    ? `⏳ Noch ${hours}h ${mins}min`
+                    : `⏳ Noch ${mins} Minuten!`;
+                timeRemainingEl.className = 'time-remaining soon';
+                resultCard.classList.add('countdown-active');
+            } else {
+                const hours = Math.floor(remainingMinutes / 60);
+                const mins = remainingMinutes % 60;
+                timeRemainingEl.textContent = hours > 0 
+                    ? `Noch ${hours}h ${mins}min`
+                    : `Noch ${mins} Minuten`;
+                timeRemainingEl.className = 'time-remaining';
+                resultCard.classList.remove('countdown-active');
+            }
+        }
+
+        // Main calculation function
+        let currentLeaveMinutes = 0;
+        
+        function calculate() {
+            const arrivalTime = document.getElementById('arrivalTime').value;
+            
+            if (!arrivalTime) return;
+            
+            const result = calculateLeaveTime(arrivalTime);
+            currentLeaveMinutes = result.leaveMinutes;
+            
+            // Update display
+            document.getElementById('leaveTime').textContent = result.leaveTime;
+            document.getElementById('workTime').textContent = result.workTime;
+            document.getElementById('pauseTime').textContent = `${result.pauseMinutes} min`;
+            
+            // Show result section
+            document.getElementById('resultSection').classList.add('visible');
+            
+            // Update time remaining
+            updateTimeRemaining(result.leaveMinutes);
+        }
+
+        // Set default arrival time to current time (rounded to nearest 5 min)
+        function setDefaultTime() {
+            const now = new Date();
+            let minutes = Math.round(now.getMinutes() / 5) * 5;
+            let hours = now.getHours();
+            
+            if (minutes === 60) {
+                minutes = 0;
+                hours = (hours + 1) % 24;
+            }
+            
+            document.getElementById('arrivalTime').value = formatTime(hours, minutes);
+        }
+
+        // Event listeners
+        document.getElementById('arrivalTime').addEventListener('input', calculate);
+        document.getElementById('arrivalTime').addEventListener('change', calculate);
+
+        // Initialize
+        setDefaultTime();
+        updateCurrentTime();
+        calculate();
+
+        // Update current time and remaining time every second
+        setInterval(() => {
+            updateCurrentTime();
+            if (currentLeaveMinutes) {
+                updateTimeRemaining(currentLeaveMinutes);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

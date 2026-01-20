@@ -1,0 +1,11 @@
+services:
+  wanndarfichheim:
+    build: .
+    container_name: wanndarfichheim
+    restart: unless-stopped
+    networks:
+      - web-services
+
+networks:
+  web-services:
+    external: true
