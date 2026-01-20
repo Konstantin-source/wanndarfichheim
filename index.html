@@ -801,19 +801,60 @@
 
     <!-- Floating Memes/GIFs -->
     <div class="floating-meme meme-left-1">
-        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Cat typing">
+        <img id="meme1" src="" alt="Random meme">
     </div>
     <div class="floating-meme meme-left-2">
-        <img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" alt="Clock">
+        <img id="meme2" src="" alt="Random meme">
     </div>
     <div class="floating-meme meme-right-1">
-        <img src="https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif" alt="Leaving work">
+        <img id="meme3" src="" alt="Random meme">
     </div>
     <div class="floating-meme meme-right-2">
-        <img src="https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif" alt="Party">
+        <img id="meme4" src="" alt="Random meme">
     </div>
 
     <script>
+        // Random memes/GIFs collection - work/time/leaving themed
+        const memeGifs = [
+            'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', // Cat typing
+            'https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif', // Clock
+            'https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif', // Leaving work
+            'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif', // Party
+            'https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif', // Running away
+            'https://media.giphy.com/media/3oriO6qJiXajN0TyDu/giphy.gif', // Homer disappearing
+            'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', // Time flying
+            'https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif', // Waiting
+            'https://media.giphy.com/media/QBd2kLB5qDmysEXre9/giphy.gif', // Watching clock
+            'https://media.giphy.com/media/3o7btNa0RUYa5E7iiQ/giphy.gif', // Celebration
+            'https://media.giphy.com/media/l0HlPystfePnAI3G8/giphy.gif', // Finally
+            'https://media.giphy.com/media/3oEjHV0z8S7WM4MwnK/giphy.gif', // Happy dance
+            'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif', // Office escape
+            'https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/giphy.gif', // Weekend vibes
+            'https://media.giphy.com/media/xT9DPJVjlYHwWsZRxm/giphy.gif', // Excited
+            'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif', // Bye bye
+            'https://media.giphy.com/media/3oKIPf3C7HqqYBVcCk/giphy.gif', // Freedom
+            'https://media.giphy.com/media/l0MYGb1LuZ3n7dRnO/giphy.gif', // Happy Friday
+            'https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif', // Dance
+            'https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif', // Yay
+        ];
+
+        // Shuffle and pick random unique GIFs
+        function getRandomGifs(count) {
+            const shuffled = [...memeGifs].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
+        // Assign random GIFs to elements
+        function loadRandomMemes() {
+            const randomGifs = getRandomGifs(4);
+            document.getElementById('meme1').src = randomGifs[0];
+            document.getElementById('meme2').src = randomGifs[1];
+            document.getElementById('meme3').src = randomGifs[2];
+            document.getElementById('meme4').src = randomGifs[3];
+        }
+
+        // Load random memes on page load
+        loadRandomMemes();
         // Constants
         const STANDARD_WORK_HOURS = 7;
         const STANDARD_WORK_MINUTES = 36;
