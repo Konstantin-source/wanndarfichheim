@@ -3,6 +3,23 @@ services:
     build: .
     container_name: wanndarfichheim
     restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    deploy:
+      resources:
+        limits:
+          cpus: "0.10"
+          memory: 32M
+        reservations:
+          cpus: "0.01"
+          memory: 16M
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     networks:
       - web-services
 
