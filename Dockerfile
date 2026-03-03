@@ -9,8 +9,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy the static website
 COPY index.html /usr/share/nginx/html/
 
-# Expose port 80
-EXPOSE 80
+# Expose port 8080
+EXPOSE 8080
 
 # Start nginx directly (skip entrypoint scripts that require write access)
 ENTRYPOINT ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
